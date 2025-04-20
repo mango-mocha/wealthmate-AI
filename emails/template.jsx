@@ -51,6 +51,8 @@ export default function EmailTemplate({
   data = {},
 }) {
   if (type === "monthly-report") {
+    const stats = data?.stats;
+
     return (
       <Html>
         <Head />
@@ -61,46 +63,52 @@ export default function EmailTemplate({
 
             <Text style={styles.text}>Hello {userName},</Text>
             <Text style={styles.text}>
-              Here&rsquo;s your financial summary for {data?.month}:
+              Here&rsquo;s your financial summary for {data?.month ?? "this month"}:
             </Text>
 
             {/* Main Stats */}
-            <Section style={styles.statsContainer}>
-              <div style={styles.stat}>
-                <Text style={styles.text}>Total Income</Text>
-                <Text style={styles.heading}>${data?.stats.totalIncome}</Text>
-              </div>
-              <div style={styles.stat}>
-                <Text style={styles.text}>Total Expenses</Text>
-                <Text style={styles.heading}>${data?.stats.totalExpenses}</Text>
-              </div>
-              <div style={styles.stat}>
-                <Text style={styles.text}>Net</Text>
-                <Text style={styles.heading}>
-                  ${data?.stats.totalIncome - data?.stats.totalExpenses}
-                </Text>
-              </div>
-            </Section>
+            {stats && (
+              <Section style={styles.statsContainer}>
+                <div style={styles.stat}>
+                  <Text style={styles.text}>Total Income</Text>
+                  <Text style={styles.heading}>
+                    ${stats?.totalIncome ?? "N/A"}
+                  </Text>
+                </div>
+                <div style={styles.stat}>
+                  <Text style={styles.text}>Total Expenses</Text>
+                  <Text style={styles.heading}>
+                    ${stats?.totalExpenses ?? "N/A"}
+                  </Text>
+                </div>
+                <div style={styles.stat}>
+                  <Text style={styles.text}>Net</Text>
+                  <Text style={styles.heading}>
+                    {stats?.totalIncome != null && stats?.totalExpenses != null
+                      ? `$${stats.totalIncome - stats.totalExpenses}`
+                      : "N/A"}
+                  </Text>
+                </div>
+              </Section>
+            )}
 
             {/* Category Breakdown */}
-            {data?.stats?.byCategory && (
+            {stats?.byCategory && (
               <Section style={styles.section}>
                 <Heading style={styles.heading}>Expenses by Category</Heading>
-                {Object.entries(data?.stats.byCategory).map(
-                  ([category, amount]) => (
-                    <div key={category} style={styles.row}>
-                      <Text style={styles.text}>{category}</Text>
-                      <Text style={styles.text}>${amount}</Text>
-                    </div>
-                  )
-                )}
+                {Object.entries(stats.byCategory).map(([category, amount]) => (
+                  <div key={category} style={styles.row}>
+                    <Text style={styles.text}>{category}</Text>
+                    <Text style={styles.text}>${amount}</Text>
+                  </div>
+                ))}
               </Section>
             )}
 
             {/* AI Insights */}
-            {data?.insights && (
+            {data?.insights?.length > 0 && (
               <Section style={styles.section}>
-                <Heading style={styles.heading}>Welth Insights</Heading>
+                <Heading style={styles.heading}>WealthMateAI Insights</Heading>
                 {data.insights.map((insight, index) => (
                   <Text key={index} style={styles.text}>
                     • {insight}
@@ -110,8 +118,7 @@ export default function EmailTemplate({
             )}
 
             <Text style={styles.footer}>
-              Thank you for using Welth. Keep tracking your finances for better
-              financial health!
+              Thank you for using WealthMateAI. Keep tracking your finances for better financial health!
             </Text>
           </Container>
         </Body>
@@ -129,22 +136,23 @@ export default function EmailTemplate({
             <Heading style={styles.title}>Budget Alert</Heading>
             <Text style={styles.text}>Hello {userName},</Text>
             <Text style={styles.text}>
-              You&rsquo;ve used {data?.percentageUsed.toFixed(1)}% of your
-              monthly budget.
+              You&rsquo;ve used {data?.percentageUsed?.toFixed(1) ?? "N/A"}% of your monthly budget.
             </Text>
             <Section style={styles.statsContainer}>
               <div style={styles.stat}>
                 <Text style={styles.text}>Budget Amount</Text>
-                <Text style={styles.heading}>${data?.budgetAmount}</Text>
+                <Text style={styles.heading}>${data?.budgetAmount ?? "N/A"}</Text>
               </div>
               <div style={styles.stat}>
                 <Text style={styles.text}>Spent So Far</Text>
-                <Text style={styles.heading}>${data?.totalExpenses}</Text>
+                <Text style={styles.heading}>${data?.totalExpenses ?? "N/A"}</Text>
               </div>
               <div style={styles.stat}>
                 <Text style={styles.text}>Remaining</Text>
                 <Text style={styles.heading}>
-                  ${data?.budgetAmount - data?.totalExpenses}
+                  {data?.budgetAmount != null && data?.totalExpenses != null
+                    ? `$${data.budgetAmount - data.totalExpenses}`
+                    : "N/A"}
                 </Text>
               </div>
             </Section>
@@ -153,6 +161,8 @@ export default function EmailTemplate({
       </Html>
     );
   }
+
+  return null;
 }
 
 const styles = {
@@ -220,3 +230,6 @@ const styles = {
     borderTop: "1px solid #e5e7eb",
   },
 };
+
+// Optional: for dev preview
+EmailTemplate.PREVIEW_PROPS = PREVIEW_DATA.monthlyReport;

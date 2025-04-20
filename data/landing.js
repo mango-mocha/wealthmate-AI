@@ -10,11 +10,11 @@ import {
 // Stats Data
 export const statsData = [
   {
-    value: "50K+",
+    value: "50",
     label: "Active Users",
   },
   {
-    value: "$2B+",
+    value: "Incoming",
     label: "Transactions Tracked",
   },
   {
@@ -88,24 +88,24 @@ export const howItWorksData = [
 // Testimonials Data
 export const testimonialsData = [
   {
-    name: "Sarah Johnson",
-    role: "Small Business Owner",
+    name: "Sarah",
+    role: "Bennett University Student",
     image: "https://randomuser.me/api/portraits/women/75.jpg",
     quote:
-      "Welth has transformed how I manage my business finances. The AI insights have helped me identify cost-saving opportunities I never knew existed.",
+      "WealthMateAI has transformed how I manage my finances. The AI insights have helped me identify cost-saving opportunities I never knew existed.",
   },
   {
-    name: "Michael Chen",
-    role: "Freelancer",
-    image: "https://randomuser.me/api/portraits/men/75.jpg",
+    name: "Mayank",
+    role: "Professor",
+    image: "https://randomuser.me/api/portraits/men/83.jpg",
     quote:
       "The receipt scanning feature saves me hours each month. Now I can focus on my work instead of manual data entry and expense tracking.",
   },
   {
-    name: "Emily Rodriguez",
-    role: "Financial Advisor",
-    image: "https://randomuser.me/api/portraits/women/74.jpg",
+    name: "Shayna",
+    role: "Student",
+    image: "https://randomuser.me/api/portraits/women/76.jpg",
     quote:
-      "I recommend Welth to all my clients. The multi-currency support and detailed analytics make it perfect for international investors.",
+      "I recommend it to all my friends. It is such a livesaver for budgeting and expense tracking. The AI insights are spot on!",
   },
 ];
